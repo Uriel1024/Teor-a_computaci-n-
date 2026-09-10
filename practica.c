@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
 
 
 typedef struct{
@@ -9,6 +7,17 @@ typedef struct{
     char *c2;
 }Cadenas; 
 
+
+int strlen(const char *cadena) {
+    int contador = 0;
+    
+    // Iterar hasta encontrar el carácter nulo '\0'
+    while (cadena[contador] != '\0') {
+        contador++;
+    }
+    
+    return contador;
+}
 
 int menu(){
     int op;
@@ -49,7 +58,7 @@ void prefijo_sufijo(char cadena[]){
     }
 
     printf("El prefico de la cadena %s de %d elementos es:\n\n", cadena,tam);
-    for(int i=0; i <= pr ; i++){
+    for(int i=0; i < pr ; i++){
         printf("%c",cadena[i]);
     }
 
