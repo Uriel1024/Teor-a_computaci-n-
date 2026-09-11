@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+//#include <string.h>
 
 typedef struct{
     char *c1;
-    char *c2;
 }Cadenas; 
 
 
@@ -17,6 +16,22 @@ int strlen(const char *cadena) {
     }
     
     return contador;
+} 
+
+char* strstr(const char *haystack, const char *needle) {
+    if (*needle == '\0') {
+        return (char *)haystack;
+    }
+    for (int i = 0; haystack[i] != '\0'; i++) {
+        int j = 0;
+        while (haystack[i + j] != '\0' && needle[j] != '\0' && haystack[i + j] == needle[j]) {
+            j++;
+        }
+        if (needle[j] == '\0') {
+            return (char *)&haystack[i];
+        }
+    }
+    return NULL;
 }
 
 int menu(){
@@ -34,16 +49,11 @@ int menu(){
 }
 
 Cadenas* cambiarCadena(){
-    Cadenas *res = (Cadenas *)malloc(20* sizeof(Cadenas));
+    Cadenas *res = (Cadenas *)malloc(sizeof(Cadenas));
 
-    res->c1 = (char *)malloc(sizeof(char));
-    res->c2 = (char *)malloc(sizeof(char));
-
-    printf("\nIngresa la cadena S: ");
+    res->c1 = (char *)malloc(100 * sizeof(char));
+    printf("\nIngresa la cadena : ");
     scanf("%s", res->c1);
-
-    printf("\nIngresa la cadena P: "); 
-    scanf("%s", res->c2);
 
     return res;
 }
@@ -68,27 +78,113 @@ void prefijo_sufijo(char cadena[]){
     }
 }
 
+void subcadena(char cad[]){
+    Cadenas *cad2 = cambiarCadena();
+    
+    while(strlen(cad2->c1) > strlen(cad)){
+        free(cad2->c1);
+        free(cad2);
+        cad2 = cambiarCadena();
+    } 
+    
+    char *str_2;
+    str_2 = strstr(cad, cad2->c1); 
+    
+    if (str_2 != NULL){
+        int tam = strlen(cad) - strlen(str_2);
+        
+        char final[strlen(cad) - strlen(cad2->c1) + 1]; 
+        
+        for(int i = 0; i < tam; i++){
+            final[i] = cad[i];
+        }
 
-void subcadena(Cadenas *cadena){
-    return;
+        int inicio_resto = tam + strlen(cad2->c1);
+        int j = tam; // Índice para seguir llenando el arreglo 'final'
+        
+        for(int i = inicio_resto; cad[i] != '\0'; i++){
+            final[j] = cad[i];
+            j++;
+        }
+        
+        final[j] = '\0'; 
+
+        printf("\n\nLa cadena resultante sin '%s' es : %s\n", cad2->c1, final);
+    
+    } else {
+        printf("\n\nNo existe la subcadena %s en la cadena %s\n", cad2->c1, cad);
+    }
+
+    free(cad2->c1);
+    free(cad2);
 }
 
+void subsecuencia(char cad[]){
+    Cadenas *cad2 = cambiarCadena();
+    
+    int tam_s = strlen(cad);
+    char final[tam_s + 1];
+    int j = 0;
+    
+    for(int i = 0; cad[i] != '\0'; i++){
+        int encontrado = 0;
+        for(int k = 0; cad2->c1[k] != '\0'; k++){
+            if(cad[i] == cad2->c1[k]){
+                encontrado = 1;
+                break;
+            }
+        }
+        if(!encontrado){
+            final[j] = cad[i];
+            j++;
+        }
+    }
+    final[j] = '\0';
 
-void potencia(char cadena[]){
-    return;
+    printf("\n\nLa subsecuencia resultante sin '%s' es : %s\n", cad2->c1, final);
+
+    free(cad2->c1);
+    free(cad2);
+}  
+
+void potencia(char cadenapot[]){
+    int pot;
+    printf("\n\nIngresa la potencia de la cadena:");
+    scanf("%d", &pot);
+    int n = strlen(cadenapot);
+    
+    char cad2[(n*pot) + 1 ];
+    if(pot > 0){
+        int ite = 0; 
+        for(int i =0; i < pot; i++ ){
+            for(int j = 0; j < n; j++){
+                cad2[ite] = cadenapot[j];
+                ite  ++;
+            }
+        }
+        cad2[ite] = '\0';
+        printf("\n\nLa cadena %s a la potencia %d es: %s ",cadenapot,pot,cad2);
+    }else if (pot< 0){
+        int ite = 0; 
+        for(int i =0; i < (pot * -1); i++ ){
+            for(int j = 0; j < n; j++){
+                cad2[ite] = cadenapot[(n-1) - j];
+                ite  ++;
+            }
+        }
+        cad2[ite] = '\0';
+        printf("\n\nLa cadena %s a la potencia %d es: %s ",cadenapot,pot,cad2);
+    }else{
+        printf("\n \n");
+    }
+
 }
-
-void invertirCadena(char cadena[]) {
-    return;
-}
-
 
 
 int main() {
  
     Cadenas *cadena = cambiarCadena();
     printf("\n La cadena S es %s", cadena->c1);
-    printf("\n La cadena P es %s \n\n\n", cadena->c2);
 
 
     int op = menu();
@@ -97,24 +193,25 @@ int main() {
         switch (op){
             case 1:
                 free(cadena->c1);
-                free(cadena->c2);
                 free(cadena);
                 cadena = cambiarCadena();
                 printf("\n La cadena S es %s", cadena->c1);
-                printf("\n La cadena P es %s \n\n\n", cadena->c2);
             break;
 
             case 2:
-                prefijo_sufijo(cadena->c1);
-                prefijo_sufijo(cadena->c2);                
+                prefijo_sufijo(cadena->c1);            
             break;
+            
             case 3:
+                subcadena(cadena->c1);
             break;
 
             case 4:
+                subsecuencia(cadena->c1);
             break;
 
             case 5:
+                potencia(cadena->c1);
             break;
             
             default:
@@ -124,7 +221,7 @@ int main() {
         op = menu();    
     }
     free(cadena->c1);
-    free(cadena->c2);
+
     free(cadena);
 
     return 0;
