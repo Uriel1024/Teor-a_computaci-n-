@@ -58,19 +58,25 @@ Cadenas* cambiarCadena(){
     return res;
 }
 
-void prefijo_sufijo2(char *cadena){
+
+void prefijo_sufijo(char cadena[]){
     int tam = strlen(cadena);
     int pr = tam + 1;
 
-    while(pr > tam || pr < 0){
+    while(pr > tam){
     printf("\n\nIngresa el tamaño de elementos a recortar para la cadena (no mayor a %d):", tam );
     scanf("%d", &pr);
     }
 
-    char *sufijo = cadena + pr;
-    printf("\n\nLa cadena orignal es: %s",cadena);
-    printf("\n\nEl prefijo de la cadena de %d elementos es: %.*s\n", pr,pr,cadena);
-    printf("\n\nEl sufijo de la cadena de %d elementos es: %s",pr,sufijo);
+    printf("El prefico de la cadena %s de %d elementos es:\n\n", cadena,tam);
+    for(int i=0; i < (tam - pr) ; i++){
+        printf("%c",cadena[i]);
+    }
+
+    printf("\n\nEl sufijo de la cadena %s de elementos %d es:\n\n",cadena,tam );
+    for(int i = pr ; i <= tam ; i++){
+        printf("%c",cadena[i]);
+    }
 }
 
 void subcadena(char cad[]){

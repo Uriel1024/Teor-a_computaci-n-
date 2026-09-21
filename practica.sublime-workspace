@@ -1,0 +1,334 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"c",
+				"cad2"
+			],
+			[
+				"str",
+				"struct"
+			],
+			[
+				"pr",
+				"prsu"
+			],
+			[
+				"dis",
+				"discord_install"
+			],
+			[
+				"op",
+				"opcion"
+			],
+			[
+				"re",
+				"respuestas"
+			],
+			[
+				"pa",
+				"paquete"
+			],
+			[
+				"sub",
+				"sublime"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "#include <stdio.h>\n#include <stdlib.h>\n//#include <string.h>\n\ntypedef struct{\n    char *c1;\n}Cadenas; \n\n//como no podemos usar diseñamos nuestras propias funciones strlen y strstr\nint strlen(const char *cadena) {\n    int contador = 0;\n    \n    // Iterar hasta encontrar el carácter nulo '\\0'\n    while (cadena[contador] != '\\0') {\n        contador++;\n    }\n    \n    return contador;\n} \n\nchar* strstr(const char *haystack, const char *needle) {\n    if (*needle == '\\0') {\n        return (char *)haystack;\n    }\n    for (int i = 0; haystack[i] != '\\0'; i++) {\n        int j = 0;\n        while (haystack[i + j] != '\\0' && needle[j] != '\\0' && haystack[i + j] == needle[j]) {\n            j++;\n        }\n        if (needle[j] == '\\0') {\n            return (char *)&haystack[i];\n        }\n    }\n    return NULL;\n}\n\nint menu(){\n    int op;\n    printf(\"\\n\\n\\n1. Cambiar cadena. \\n\");\n    printf(\"2. Obtener prefijo y sufijo. \\n\");\n    printf(\"3. Obtener la subcadena. \\n \");\n    printf(\"4. Obtener la subsecuencia \\n\");\n    printf(\"5. Potencia de una cadena \\n\");\n    printf(\"-1. Para salir  \");\n    printf(\"\\n Ingresa una opcion para poder continuar: \");\n    scanf(\"%d\", &op);\n\n    return op;  \n}\n\nCadenas* cambiarCadena(){\n    Cadenas *res = (Cadenas *)malloc(sizeof(Cadenas));  \n\n    res->c1 = (char *)malloc(100 * sizeof(char));\n    printf(\"\\nIngresa la cadena : \");\n    scanf(\" %[^\\n]\", res->c1);\n\n    return res;\n}\n\nvoid prefijo_sufijo2(char *cadena){\n    int tam = strlen(cadena);\n    int pr = tam + 1;\n\n    while(pr > tam || pr < 0){\n    printf(\"\\n\\nIngresa el tamaño de elementos a recortar para la cadena (no mayor a %d):\", tam );\n    scanf(\"%d\", &pr);\n    }\n\n    char *sufijo = cadena + pr;\n    printf(\"\\n\\nLa cadena orignal es: %s\",cadena);\n    printf(\"\\n\\nEl prefijo de la cadena de %d elementos es: %.*s\\n\", pr,pr,cadena);\n    printf(\"\\n\\nEl sufijo de la cadena de %d elementos es: %s\",pr,sufijo);\n}\n\nvoid subcadena(char cad[]){\n    Cadenas *cad2 = cambiarCadena();\n    \n    while(strlen(cad2->c1) > strlen(cad)){\n        free(cad2->c1);\n        free(cad2);\n        cad2 = cambiarCadena();\n    } \n    \n    char *str_2;\n    str_2 = strstr(cad, cad2->c1); \n    \n    if (str_2 != NULL){\n        int tam = strlen(cad) - strlen(str_2);\n        \n        char final[strlen(cad) - strlen(cad2->c1) + 1]; \n        \n        for(int i = 0; i < tam; i++){\n            final[i] = cad[i];\n        }\n\n        int inicio_resto = tam + strlen(cad2->c1);\n        int j = tam; // Índice para seguir llenando el arreglo 'final'\n        \n        for(int i = inicio_resto; cad[i] != '\\0'; i++){\n            final[j] = cad[i];\n            j++;\n        }\n        \n        final[j] = '\\0'; \n\n        printf(\"\\n\\nLa cadena resultante sin '%s' es : %s\\n\", cad2->c1, final);\n    \n    } else {\n        printf(\"\\n\\nNo existe la subcadena %s en la cadena %s\\n\", cad2->c1, cad);\n    }\n\n    free(cad2->c1);\n    free(cad2);\n}\n\nvoid subsecuencia(char cad[]){\n    Cadenas *cad2 = cambiarCadena();\n    \n    int tam_s = strlen(cad);\n    char final[tam_s + 1];\n    int j = 0;\n    \n    for(int i = 0; cad[i] != '\\0'; i++){\n        int encontrado = 0;\n        for(int k = 0; cad2->c1[k] != '\\0'; k++){\n            if(cad[i] == cad2->c1[k]){\n                encontrado = 1;\n                break;\n            }\n        }\n        if(!encontrado){\n            final[j] = cad[i];\n            j++;\n        }\n    }\n    final[j] = '\\0';\n\n    printf(\"\\n\\nLa subsecuencia resultante sin '%s' es : %s\\n\", cad2->c1, final);\n\n    free(cad2->c1);\n    free(cad2);\n}  \nvoid potencia(char cadenapot[]){\n    int pot;\n    printf(\"\\n\\nIngresa la potencia de la cadena:\");\n    scanf(\"%d\", &pot);\n    int n = strlen(cadenapot);\n    \n\n    char cad2[(n*(abs(pot))) + 1 ];\n    int ite = 0; \n    if(pot > 0){ \n        for(int i =0; i < pot; i++ ){\n            for(int j = 0; j < n; j++){\n                cad2[ite] = cadenapot[j];\n                ite  ++;\n            }\n        }\n        cad2[ite] = '\\0';\n        printf(\"\\n\\nLa cadena %s a la potencia %d es: %s \",cadenapot,pot,cad2);\n    }else if (pot< 0){\n\n        for(int i =0; i < (pot * -1); i++ ){\n            for(int j = 0; j < n; j++){\n                cad2[ite] = cadenapot[(n-1) - j];\n                ite  ++;\n            }\n        }\n        cad2[ite] = '\\0';\n        printf(\"\\n\\nLa cadena %s a la potencia %d es: %s \",cadenapot,pot,cad2);\n    }else{\n        printf(\"\\nLa cadena %s a la potencia %d es:   \\n\",cadenapot,pot);\n    }\n\n}\n\nint main() {\n    Cadenas *cadena = cambiarCadena();\n    printf(\"\\n La cadena S es %s\", cadena->c1);\n    int op = menu();\n    while (op != -1){\n\n        switch (op){\n            case 1:\n                free(cadena->c1);\n                free(cadena);\n                cadena = cambiarCadena();printf(\"\\n La cadena S es %s\", cadena->c1);\n            break;\n            case 2:prefijo_sufijo2(cadena->c1);            \n            break;\n            case 3:subcadena(cadena->c1);\n            break;\n            case 4:subsecuencia(cadena->c1);\n            break;\n            case 5:potencia(cadena->c1);\n            break;\n            default:printf(\"Ingesa una opcion valida. \");\n            break;\n        }\n        op = menu();    \n    }\n    free(cadena->c1);\n\n    free(cadena);\n\n    return 0;\n}\n",
+			"file": "practica.c",
+			"file_size": 5231,
+			"file_write_time": 134344034536479838,
+			"settings":
+			{
+				"buffer_size": 5227,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			},
+			"undo_stack":
+			[
+				[
+					3,
+					1,
+					"insert",
+					{
+						"characters": "\t"
+					},
+					"AQAAAAAAAAAAAAAABAAAAAAAAAAAAAAA",
+					"AQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPC/"
+				],
+				[
+					4,
+					1,
+					"delete_word",
+					{
+						"forward": false
+					},
+					"AQAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAICAgIA",
+					"AQAAAAAAAAABAAAABAAAAAAAAAAEAAAAAAAAAAAAAAAAAPC/"
+				]
+			]
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"insta",
+				"Colorsublime: Install Theme"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"isnta",
+				"Colorsublime: Install Theme"
+			],
+			[
+				"color",
+				"Colorsublime: Install Theme"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/uriel/voz/práctica1/libreria.py",
+		"/home/uriel/voz/práctica1/manual.py",
+		"/home/uriel/voz/práctica1/ma",
+		"/home/uriel/voz/práctica1/librosa.py",
+		"/home/uriel/hola2.c",
+		"/home/uriel/Teor-a_computaci-n-/practica.c",
+		"/home/uriel/hola1.c",
+		"/home/uriel/Downloads/cadenas.c",
+		"/home/uriel/teoria/emi.c",
+		"/home/uriel/teoria/cadenas.c",
+		"/home/uriel/teoria/prueba.c",
+		"/home/uriel/teoria/practica.c",
+		"/home/uriel/teoria/pr",
+		"/home/uriel/Scripts-/menu/menu.py",
+		"/home/uriel/Scripts-/menu/gastos.py",
+		"/home/uriel/prueba",
+		"/home/uriel/prueba.c",
+		"/home/uriel/Scripts-/menu/menu.",
+		"/home/uriel/Scripts-/Scripts/ksh.sh",
+		"/home/uriel/Scripts-/Scripts/install.sh",
+		"/home/uriel/Scripts-/Scripts/genkey.sh",
+		"/home/uriel/.zshrc",
+		"/home/uriel/Scripts-/Scripts/net2.sh",
+		"/home/uriel/Scripts-/Scripts/net1.sh",
+		"/home/uriel/Scripts-/Scripts/net.sh",
+		"/etc/NetworkManager/system-connections/INFINITUM735D.nmconnection",
+		"/home/uriel/Scripts-/Scripts/chocolate.sh",
+		"/home/uriel/Scripts-/Scripts/nano_pro.sh",
+		"/home/uriel/Scripts-/Scripts/naco.sh",
+		"/home/uriel/app/hola.js",
+		"/home/uriel/Scripts-/Scripts/compilac.sh",
+		"/home/uriel/app/hola.ts",
+		"/home/uriel/Scripts-/Scripts/install.",
+		"/home/uriel/Scripts-/Scripts/compilac",
+		"/home/uriel/Downloads/tmp/DEBIAN/control",
+		"/home/uriel/machin/machin.py",
+		"/home/uriel/app/si.js",
+		"/home/uriel/app/docker-compose.yml",
+		"/home/uriel/Scripts-/Scripts/pruebas.sh",
+		"/home/uriel/Scripts-/Scripts/discord.sh",
+		"/home/uriel/pruebas_debian13/docker-compose.yml",
+		"/home/uriel/discord.py",
+		"/home/uriel/app/main.py",
+		"/home/uriel/app/index.html",
+		"/home/uriel/main.py",
+		"/home/uriel/Materias_Ing_Inteligencia_Artificial/README.md"
+	],
+	"find":
+	{
+		"height": 28.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "practica.c",
+					"selected": true,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5227,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C Improved/C Improved.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"pinned_build_system": "",
+	"project": "practica.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
