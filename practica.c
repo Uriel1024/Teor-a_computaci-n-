@@ -11,7 +11,7 @@ int strlen(const char *cadena) {
     int contador = 0;
     
     // Iterar hasta encontrar el carácter nulo '\0'
-    while (cadena[contador] != '\0') {
+    while(cadena[contador] != '\0') {
         contador++;
     }
     
@@ -154,31 +154,25 @@ void potencia(char cadenapot[]){
     int n = strlen(cadenapot);
     
 
-    char cad2[(n*(abs(pot))) + 1 ];
-    int ite = 0; 
     if(pot > 0){ 
+        printf("La cadena %s, a la potencia %d es: \n\n", cadenapot, pot);
         for(int i =0; i < pot; i++ ){
             for(int j = 0; j < n; j++){
-                cad2[ite] = cadenapot[j];
-                ite  ++;
+                printf("%c",cadenapot[j]);
             }
         }
-        cad2[ite] = '\0';
-        printf("\n\nLa cadena %s a la potencia %d es: %s ",cadenapot,pot,cad2);
     }else if (pot< 0){
-
+        printf("La cadena %s, a la potencia %d es:\n\n", cadenapot, pot);
         for(int i =0; i < (pot * -1); i++ ){
             for(int j = 0; j < n; j++){
-                cad2[ite] = cadenapot[(n-1) - j];
-                ite  ++;
+                printf("%c",cadenapot[(n-1) - j]);
             }
         }
-        cad2[ite] = '\0';
-        printf("\n\nLa cadena %s a la potencia %d es: %s ",cadenapot,pot,cad2);
     }else{
         printf("\nLa cadena %s a la potencia %d es:   \n",cadenapot,pot);
     }
 
+    printf("\n\n\n");
 }
 
 int main() {
@@ -193,7 +187,7 @@ int main() {
                 free(cadena);
                 cadena = cambiarCadena();printf("\n La cadena S es %s", cadena->c1);
             break;
-            case 2:prefijo_sufijo2(cadena->c1);            
+            case 2:prefijo_sufijo(cadena->c1);            
             break;
             case 3:subcadena(cadena->c1);
             break;
