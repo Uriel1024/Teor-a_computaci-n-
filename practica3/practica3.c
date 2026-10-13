@@ -47,8 +47,10 @@ int transiciones[ESTADOS][2][ESTADOS] = {
 
 int get_simbolo(char caracter){
     if(caracter == 'a') return 0;
-    else return 1; 
+    else if (caracter == 'b') return 1;
+    else return -1; //estado prohibido  
 }
+
 
 void imprimir_rama(const char *cadena, int pos, const char *resultado){
     for(int i = 0; i <= pos; i++){
@@ -71,6 +73,10 @@ void explorar(const char *cadena, int pos, int estado){
         return;
     }
     int simbolo = get_simbolo(cadena[pos]);
+    if (simbolo == -1){
+        printf("Cadena con caracteres que no pertencen al alfabeto.\n");
+        return;
+    }
 
     for(int k = 0; k < ESTADOS; k++){
         if(transiciones[estado][simbolo][k]){
