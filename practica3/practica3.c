@@ -92,7 +92,7 @@ int main(){
     scanf("%99s",cadena);
     printf("\nRamas posibles:\n");
     explorar(cadena, 0, 0);   // empieza en q0
-    printf("\nTotal de ramas: %d, aceptadas: %d\n", total_ramas, aceptadas);
+    printf("\nTotal de ramas: ",  aceptadas) ;
 
     return 0;
 }
