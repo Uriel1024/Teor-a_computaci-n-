@@ -159,10 +159,10 @@ int main(void) {
 
     for (int k = 0; k < total_subconjuntos; k++) {
         for (int s = 0; s < numSimbolos; s++) {
-            // para revisar cada estado individual dentro del subconjunto actual
+            // Revisar cada estado individual dentro del subconjunto actual
             for (int i = 0; i < numEstados; i++) {
                 if (subconjuntos[k][i] == 1) {
-                    //  transiciones para el estado 'i' con el símbolo 's'
+                    // Buscar transiciones para el estado 'i' con el símbolo 's'
                     for (int t = 0; t < numTransiciones; t++) {
                         if (strcmp(transiciones[t][0], estados[i]) == 0 &&
                             strcmp(transiciones[t][1], alfabeto[s]) == 0) {
